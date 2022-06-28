@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap" :style="`background-image: url('https://raw.githubusercontent.com/WangShuan/F2E-booking/main/src/assets/img/house/bg${item}.jpeg')`">
+  <div class="wrap" :style="`background-image: url('https://raw.githubusercontent.com/KuoMinLi/F2E-HotelBooking/master/src/assets/image/house/bg${item}.jpeg')`">
     <div class="bg_opacity">
       <div class="contanier">
         <div class="logo_side">
@@ -30,7 +30,7 @@
                 :key="item.id"
                 class="roomBtn"
                 :style="`background-image: url(${imageUrl[index]})`"
-                @click="$router.push(`/booking/1`)"
+                @click="$router.push(`/booking/${item.id}`)"
               >
               <div class="roomBtn_active">
                 {{ item.name }}
@@ -38,7 +38,7 @@
               </li>
             </ul>
           </div>
-          <div class="footer"></div>
+          <div class="footer">UI DESIGN by Pei-Chuan Li</div>
         </div>
       </div>
     </div>

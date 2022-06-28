@@ -1,0 +1,153 @@
+.roomwrap {
+  max-width: 1444px;
+  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  padding-right: 7vw;
+}
+
+h1, p {
+  font-family: "Noto Sans TC";
+}
+
+.roompic {
+  width: 42%;
+  height: 100%;
+}
+
+.backhome {
+  color: $primary;
+  font-weight: lighter;
+  display: block;
+  padding-top: 8vh;
+  padding-left: 7vw;
+}
+
+.room_side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.room_text {
+  color: $primary;
+  padding-top: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  margin-bottom: 17px;
+}
+
+.room_price {
+  font-size: 36px;
+  line-height: 49px;
+  font-family: 'Open Sans';
+  padding-right: 19px;
+}
+
+.room_day {
+  font-size: 20px;
+  line-height: 29px;
+  font-family: 'Open Sans';
+  padding-left: 19px;
+}
+
+.bookingBtn {
+  width: 40%;
+  margin: 0 auto;
+  padding: 8.5px 0px;
+  background-color: $primary;
+  border: 1px $primary solid;
+  color: white;
+  font-size: 20px;
+  line-height: 27px;
+  font-family: 'Open Sans';
+  margin-bottom: 50px;
+}
+
+.roompage {
+  cursor: pointer;
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid $primary;
+  border-radius: 50%;
+  margin-right: 11px;
+}
+
+.roompage_active {
+  background-color: $primary;
+}
+
+.room_content {
+  padding-left: 30px;
+  width: 57%;
+  padding-top: 10vh;
+}
+
+.room_title {
+  text-align: right;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: $primary;
+  padding-bottom: 48px;
+}
+
+.room_time {
+  font-size: 14px;
+  line-height: 24px;
+  color: $primary;
+  padding-bottom: 35px;
+  font-weight: 400;
+}
+
+.room_description {
+  font-size: 14px;
+  line-height: 24px;
+  color: $primary;
+  font-weight: lighter;
+  margin-bottom: 49px;
+}
+
+.room_amenities {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px 40px;
+  width: 100%;
+}
+
+.room_icon {
+  width: 61px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: start;
+}
+
+.room_icon_disable{
+  opacity: 0.2;
+}
+
+.room_status {
+  width: 14px;
+  margin-left: 7px;
+}
+
+.room_icon_title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.room_icon_pic {
+  width: 40px;
+}
+
+.room_icon_text {
+  text-align: center;
+  margin-top: 7px;
+  font-size: 10px;
+  line-height: 15px;
+}

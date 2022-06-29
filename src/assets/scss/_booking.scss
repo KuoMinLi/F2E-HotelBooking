@@ -7,6 +7,29 @@
   padding-right: 7vw;
 }
 
+.lightbox {
+  position: absolute;
+  width: 100%;  
+  height: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  display: flex;
+  justify-content: center;
+  padding: 24px 0px;
+  z-index: 10;
+}
+
+.album_img {
+  width: 40vw;
+  margin: 0 15vw;
+  z-index: 10;
+}
+
+.album_btn {
+  width: 30px;
+  cursor: pointer;
+}
+
+
 h1, p {
   font-family: "Noto Sans TC";
 }
@@ -18,10 +41,15 @@ h1, p {
 
 .backhome {
   color: $primary;
+  font-family: "Noto Sans TC";
   font-weight: lighter;
   display: block;
-  padding-top: 8vh;
+  padding-top: 7vh;
   padding-left: 7vw;
+  &:hover {
+    text-decoration: underline;
+    font-weight: bold;
+  }
 }
 
 .room_side {
@@ -67,7 +95,6 @@ h1, p {
 }
 
 .roompage {
-  cursor: pointer;
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -83,7 +110,7 @@ h1, p {
 .room_content {
   padding-left: 30px;
   width: 57%;
-  padding-top: 10vh;
+  padding-top: 7vh;
 }
 
 .room_title {
@@ -117,6 +144,7 @@ h1, p {
   flex-wrap: wrap;
   gap: 24px 40px;
   width: 100%;
+  margin-bottom: 24px;
 }
 
 .room_icon {
@@ -150,4 +178,21 @@ h1, p {
   margin-top: 7px;
   font-size: 10px;
   line-height: 15px;
+}
+
+.roomCheck {
+  width: 100%;
+}
+
+.roomCheck_title {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 600;
+  font-family: "Noto Sans TC";
+  color: $primary;
+  margin-bottom: 8px;
+}
+
+.roomCheck_calendar {
+  border: 1px $primary solid;
 }

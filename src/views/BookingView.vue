@@ -1,6 +1,27 @@
 <template>
+<FormView v-if="OrderShow">111</FormView>
+<div v-if="isShow" class="lightbox" @click="closeAlbum()">
+  <img
+    :src="require(`../assets/image/icons/album-prev.svg`)"
+    class="album_btn"
+    @click.stop="prevImage()"
+    alt=""
+  >
+  <div
+    :style="{ 'background-image': `url(${Album_image})` }"
+    alt=""
+    class="album_img"
+  ></div>
+  <img
+    :src="require(`../assets/image/icons/album-next.svg`)"
+    class="album_btn"
+    @click.stop="nextImage()"
+    alt=""
+  />
+</div>
 <div class="roomwrap">
-  <div class="roompic" :style="`background-image: url(${roomImgaeUrl[item - 1]})`">
+  <div class="roompic" :style="`background-image: url(${roomImgaeUrl[item - 1]})`"
+  @click="showImage(roomImgaeUrl[item - 1])">
      <router-link to="/" class="backhome">
             <img
               src="../assets/image/icons/previous.svg"
@@ -11,11 +32,11 @@
           </router-link>
       <div class="room_side">
         <div class="room_text">
-          <div class="room_price">${{ data.normalDayPrice}}</div>
+          <div class="room_price">${{ $filters.currency(data.normalDayPrice) }}</div>
           /
           <div class="room_day">1晚</div>
         </div>
-        <button class="bookingBtn">Booking now</button>
+        <button class="bookingBtn" @click.stop="OpenForm()">Booking now</button>
         <div class="room_page">
           <span
           class="roompage"
@@ -30,7 +51,8 @@
     <h1 class="room_title">{{ data.descriptionShort.GuestMax}}人・
     {{ data.descriptionShort.Bed.length}}張 {{ data.descriptionShort.Bed[0]}} 床組・
     附早餐・衛浴 {{ data.descriptionShort['Private-Bath']}} 間・{{ data.descriptionShort.Footage}} 平方公尺</h1>
-    <p class="room_time">平日（一～四）價格：{{ data.normalDayPrice}} / 假日（五〜日）價格：{{ data.holidayPrice}}<br>
+    <p class="room_time">平日（一～四）價格：{{ $filters.currency(data.normalDayPrice) }} /
+     假日（五〜日）價格：{{ $filters.currency(data.holidayPrice) }}<br>
     入住時間：{{ data.checkInAndOut.checkInEarly }}（最早） / {{ data.checkInAndOut.checkInLate }}（最晚） <br>
     退房時間：{{ data.checkInAndOut.checkOut }}</p>
     <ul class="room_description">
@@ -65,19 +87,26 @@
         </div>
       </div>
     </div>
-    <DatePicker
-    v-model="range"
-    :value="null"
-    :columns="$screens({ default: 1, lg: 2 })"
-    color="primary"
-    :attributes='attrs'
-    is-range />
+    <div class="roomCheck">
+      <div class="roomCheck_title">空房狀態查詢</div>
+      <div class="roomCheck_calendar">
+        <Calendar />
+        <DatePicker
+          v-model="range"
+          :value="null"
+          :columns="$screens({ default: 1, lg: 2 })"
+          color="primary"
+          is-expanded
+          is-range />
+      </div>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
 import axios from 'axios';
+import FormView from '@/components/FormView.vue';
 
 export default {
   data() {
@@ -85,10 +114,14 @@ export default {
       data: '',
       roomAmenities: [],
       roomImgaeUrl: [],
+      Album_image: '',
       item: 1,
       range: { start: '', end: '' },
+      isShow: false,
+      OrderShow: false,
     };
   },
+  components: { FormView },
   methods: {
     picloop() {
       this.timeout = setInterval(() => {
@@ -99,6 +132,34 @@ export default {
         }
       }, 5000);
     },
+    showImage(item) {
+      this.isShow = true;
+      this.Album_image = item;
+    },
+    prevImage() {
+      let i = this.roomImgaeUrl.findIndex((item) => item === this.Album_image);
+      if (i === 2) {
+        i = 0;
+      } else {
+        i += 1;
+      }
+      this.Album_image = this.roomImgaeUrl[i];
+    },
+    nextImage() {
+      let i = this.roomImgaeUrl.findIndex((item) => item === this.Album_image);
+      if (i === 0) {
+        i = 2;
+      } else {
+        i -= 1;
+      }
+      this.Album_image = this.roomImgaeUrl[i];
+    },
+    closeAlbum() {
+      this.isShow = false;
+    },
+    OpenForm() {
+      this.OrderShow = true;
+    },
   },
   computed: {
     description() {
@@ -107,7 +168,6 @@ export default {
       descriptionlist.forEach((item) => {
         arr.push(item.trim());
       });
-      console.log(arr);
       arr.splice(arr.length - 1, 1);
       return arr;
     },

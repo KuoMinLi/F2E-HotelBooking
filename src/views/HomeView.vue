@@ -2,24 +2,27 @@
   <div class="wrap" :style="`background-image: url('https://raw.githubusercontent.com/KuoMinLi/F2E-HotelBooking/master/src/assets/image/house/bg${item}.jpeg')`">
     <div class="bg_opacity">
       <div class="contanier">
+        <div class="footer footer_sm">UI DESIGN by Pei-Chuan Li</div>
         <div class="logo_side">
           <img class="logo"
               src="https://househotel.netlify.app/static/media/logo.3fafe707.svg"
               alt="好室"
           />
-          <div>
+          <div class="logo_word">
+            <div>
             <h1 class="logo_title">好室旅店。HOUSE HOTEL</h1>
             <p class="logo_txt">花蓮縣花蓮市國聯一路1號<br>
-              03-8321155<br>
-              HOUSE@HOTEL.COM</p>
-          </div>
-          <div class="bg_page">
-            <span class="page"
-              v-for="index in 4"
-              :key="index"
-              :class="{ 'page_active': index == item }"
-              @click="item = index"
-            ></span>
+            03-8321155<br>
+            HOUSE@HOTEL.COM</p>
+            </div>
+            <div class="bg_page">
+              <span class="page"
+                v-for="index in 4"
+                :key="index"
+                :class="{ 'page_active': index == item }"
+                @click="item = index"
+              ></span>
+            </div>
           </div>
         </div>
         <div class="content">

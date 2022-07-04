@@ -1,5 +1,5 @@
 @mixin breakpoint-xl() {
-  @media (max-width: 1024px) {
+  @media (max-width: 1080px) {
     @content;
   }
 }
@@ -23,3 +23,10 @@
     @content;
   }
 }
+@mixin breakpoint-desktop() {
+  @media (max-height: 756px) {
+    @content;
+  }
+}
+
+

@@ -1,7 +1,139 @@
-.Formwrap {
+.formwrap {
   width: 100vw;
   height: 100vh;
-  background-color: gray;
-  position: absolute;
   z-index: 5;
+  position: absolute;
 }
+
+.form_opacity {
+  width: 100%;
+  height: 100%;
+  background-color:rgba(255,255,255,0.7);
+}
+
+.form_contanier {
+  padding: 84px 10%;
+  display: flex;
+}
+
+.user_imf {
+  background-color: $primary;
+  width: 40%;
+  height: calc(100vh - 168px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  padding: 0px 65px;
+}
+
+label, input {
+  display: block;
+  font-weight: lighter;
+}
+
+.user_imf_list {
+  width: 100%;
+}
+
+.user_imf_item {
+  font-size: 14px;
+  line-height: 20px;
+  input {
+    margin-top: 7px;
+    margin-bottom: 16px;
+    height: 38px;
+    width: 100%;
+  }
+}
+
+.total_day {
+  color: $secondary;
+  font-size: 14px;
+  line-height: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $secondary;
+  font-family: "Noto Sans TC";
+}
+
+.form_price {
+  width: 100%;
+}
+
+.form_price_title {
+  font-size: 14px;
+  line-height: 20px;
+  color: #FFFFFF;
+  text-align: right;
+  padding-top: 8px;
+}
+
+.form_total_price {
+  font-size: 26px;
+  line-height: 36px;
+  text-align: right;
+  padding-bottom: 20px;
+}
+
+.form_bookingbtn {
+  width: 100%;
+  color: #FFFFFF;
+  border: 1px solid #FFFFFF;
+  background-color: $primary;
+  font-size: 18px;
+  line-height: 27px;
+  padding: 7px 0px;
+  margin-bottom: 18px;
+}
+
+.booking_footer {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.booking_roomimf {
+  width: 60%;
+  border: 1px solid $primary;
+  background-color: #FFFFFF;
+  padding: 0px 30px;
+  padding-top: 50px;
+}
+
+.form_room_title {
+  font-size: 24px;
+  line-height: 33px;
+  color: $primary;
+  font-family: 'Open Sans';
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form_room_description {
+  font-size: 14px;
+  line-height: 24px;
+  margin-bottom: 27px;
+}
+
+.form_room_iconGroup {
+  height: 43px;
+  margin-bottom: 26px;
+}
+
+.form_room_title_second {
+  font-size: 16px;
+  line-height: 24px;
+  color:  $primary;
+  font-weight: bold;
+  font-family: "Noto Sans TC";
+}
+
+.form_room_title_imf_item {
+  font-size: 12px;
+  line-height: 26px;
+  color: $primary;
+  font-weight: 300;
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+

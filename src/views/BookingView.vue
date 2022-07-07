@@ -1,5 +1,12 @@
 <template>
-<FormView v-if="OrderShow">111</FormView>
+<FormView v-if="FormShow"
+  :data="data"
+  :inday="inday"
+  :outday="outday"
+  :roomAmenities="roomAmenities"
+  :pricetotal="totalprice"
+  @closeForm="closeForm"
+></FormView>
 <div v-if="isShow" class="lightbox" @click="closeAlbum()">
   <img
     :src="require(`../assets/image/icons/album-prev.svg`)"
@@ -32,11 +39,11 @@
           </router-link>
       <div class="room_side">
         <div class="room_text">
-          <div class="room_price">${{ $filters.currency(data.normalDayPrice) }}</div>
+          <div class="room_price">${{ $filters.currency(totalPrice || data.normalDayPrice) }}</div>
           /
-          <div class="room_day">1晚</div>
+          <div class="room_day">{{ totalDays || 1 }}晚</div>
         </div>
-        <button class="bookingBtn" @click.stop="OpenForm()">Booking now</button>
+        <button class="bookingBtn" @click.stop="OpenForm">Booking now</button>
         <div class="room_page">
           <span
           class="roompage"
@@ -95,6 +102,7 @@
           v-model="range"
           :value="null"
           :columns="$screens({ default: 1, lg: 2 })"
+          :min-date="new Date(new Date().getTime()+ 6 * 60 * 60 * 1000)"
           color="primary"
           is-expanded
           is-range />
@@ -118,7 +126,7 @@ export default {
       item: 1,
       range: { start: '', end: '' },
       isShow: false,
-      OrderShow: false,
+      FormShow: false,
     };
   },
   components: { FormView },
@@ -131,6 +139,25 @@ export default {
           this.item += 1;
         }
       }, 5000);
+    },
+    getdata() {
+      const roomId = this.$route.params.id;
+      this.axios = axios.create({
+        baseURL:
+          'https://challenge.thef2e.com/api/thef2e2019/stage6/room/',
+        timeout: 2000,
+        headers: {
+          Acctept: 'application/json',
+          Authorization: 'Bearer jjHZprDIBXxFzXTcwqzGI9w1hXvVBQ7YL2YdvHMNQhYthTltxTxFA46M5FQH',
+        },
+      });
+      this.axios.get(`${roomId}`).then((res) => {
+        if (res.data.success) {
+          [this.data] = res.data.room;
+          this.roomAmenities = this.data.amenities;
+          this.roomImgaeUrl = this.data.imageUrl;
+        }
+      });
     },
     showImage(item) {
       this.isShow = true;
@@ -158,7 +185,11 @@ export default {
       this.isShow = false;
     },
     OpenForm() {
-      this.OrderShow = true;
+      this.FormShow = true;
+    },
+    closeForm() {
+      this.FormShow = false;
+      this.getdata();
     },
   },
   computed: {
@@ -181,27 +212,42 @@ export default {
       }
       return arr;
     },
+    totalDays() {
+      const day1 = new Date(this.range.start);
+      const day2 = new Date(this.range.end);
+      const totalday = Math.abs(day2 - day1);
+      return parseInt(totalday / (1000 * 3600 * 24), 10);
+    },
+    inday() {
+      const day1 = new Date(this.range.start);
+      return day1;
+    },
+    outday() {
+      const day2 = new Date(this.range.end);
+      return day2;
+    },
+    totalPrice() {
+      const day1 = new Date(this.range.start);
+      const totalday = this.totalDays;
+      const weekday = day1.getDay();
+      const normalPrice = this.data.normalDayPrice;
+      const holiPrice = this.data.holidayPrice;
+      let tolPrice = 0;
+      for (let i = 0; i < totalday; i += 1) {
+        if (
+          weekday + i === 5 || weekday + i === 6 || weekday + i === 0
+        ) {
+          tolPrice += holiPrice;
+        } else {
+          tolPrice += normalPrice;
+        }
+      }
+      return tolPrice;
+    },
   },
   created() {
     this.picloop();
-    const roomId = this.$route.params.id;
-    this.axios = axios.create({
-      baseURL:
-        'https://challenge.thef2e.com/api/thef2e2019/stage6/room/',
-      timeout: 2000,
-      headers: {
-        Acctept: 'application/json',
-        Authorization: 'Bearer jjHZprDIBXxFzXTcwqzGI9w1hXvVBQ7YL2YdvHMNQhYthTltxTxFA46M5FQH',
-      },
-    });
-    this.axios.get(`${roomId}`).then((res) => {
-      if (res.data.success) {
-        [this.data] = res.data.room;
-        console.log(this.data);
-        this.roomAmenities = this.data.amenities;
-        this.roomImgaeUrl = this.data.imageUrl;
-      }
-    });
+    this.getdata();
   },
 };
 

@@ -45,6 +45,7 @@ label, input {
     margin-bottom: 16px;
     height: 38px;
     width: 100%;
+    position: relative;
   }
 }
 
@@ -97,7 +98,10 @@ label, input {
   border: 1px solid $primary;
   background-color: #FFFFFF;
   padding: 0px 30px;
-  padding-top: 50px;
+  padding-right: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .form_room_title {
@@ -107,17 +111,60 @@ label, input {
   font-family: 'Open Sans';
   font-weight: bold;
   margin-bottom: 8px;
+  position: relative;
+}
+
+.form_close {
+  position: absolute;
+  top:-45px;
+  right: -45px;
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+
+.form_room_title::after{
+  content: " ";
+  display: block;
+  width: 60%;
+  background-color: $secondary;
+  position: absolute;
+  height: 1px;
+  top: 55%;
+  left: 38%;
 }
 
 .form_room_description {
   font-size: 14px;
   line-height: 24px;
-  margin-bottom: 27px;
+  margin-bottom: 18px;
 }
 
 .form_room_iconGroup {
-  height: 43px;
-  margin-bottom: 26px;
+  width: 100%;
+  margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end
+}
+
+.booking_icon {
+  margin-right: 18px;
+  margin-bottom: 18px;
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.booking_icon_image {
+  width: 30px;
+}
+
+.booking_icon_text {
+  font-size: 10px;
+  line-height: 15px;
+  text-align: center;
 }
 
 .form_room_title_second {
@@ -126,6 +173,18 @@ label, input {
   color:  $primary;
   font-weight: bold;
   font-family: "Noto Sans TC";
+  position: relative;
+}
+
+.form_room_title_second::before{
+  content: " ";
+  display: block;
+  width: 84%;
+  background-color: $secondary;
+  position: absolute;
+  height: 1px;
+  top: 50%;
+  left: 14%;
 }
 
 .form_room_title_imf_item {
@@ -137,3 +196,43 @@ label, input {
   margin-top: 12px;
 }
 
+.form_room_booking_flow {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  align-items: start;
+}
+
+.flow_card {
+  width: 28%;
+  background-color: $secondary;
+  border-radius: 0px 0px 10px 10px;
+  border: 1px solid $secondary;
+}
+
+.form_arrow_icon {
+  width: 7.5px;
+  height: 50px;
+}
+
+.flow_card_image {
+  height: 40px;
+  padding: 5px 0px;
+}
+
+.flow_card_text {
+  color: $primary;
+  background-color: #FFFFFF;
+  min-height: 86px;
+  padding: 0 7px;
+  padding-top: 14px;
+  border-radius: 0px 0px 10px 10px;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.booking-form-input {
+  height: 100px;
+  width: 200px;
+}

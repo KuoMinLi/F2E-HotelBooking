@@ -2,35 +2,46 @@
   <div class="formwrap">
     <div class="form_opacity">
       <div class="form_contanier">
-        <div class="user_imf">
+        <form class="user_imf" @submit="submit()">
           <ul class="user_imf_list">
             <li class="user_imf_item">
               <label for="form_booking_name">姓名
-                <input class="input" type="text"/>
+              <input
+                type="text"
+                placeholder="請輸入姓名"
+                name=""
+                id=""
+                required
+                v-model="bookingdata.name"/>
               </label>
             </li>
             <li class="user_imf_item">
               <label for="form_booking_phone">手機號碼
-                <input class="input" type="text">
+                <input
+                  type="tel"
+                  placeholder="請輸入手機號碼"
+                  name=""
+                  id=""
+                  required
+                  minlength="10"
+                  v-model="bookingdata.tel">
               </label>
             </li>
             <li class="user_imf_item">
               <label for="form_booking_inday">入住日期
                   <div class="booking_calendar" >
-                      <Calendar />
                       <DatePicker
                         v-model="book_inday"
                         :min-date="new Date(new Date().getTime() + 6 * 60 * 60 * 1000)"
                         :disabled-dates="disableDates"
                         :masks="masks"
-                        :attributes="attribute"
                         color="primary"
                         is-required >
                         <template v-slot="{ inputValue, inputEvents }">
                           <input
-                            class="booking_form_input"
                             :value="inputValue"
                             v-on="inputEvents"
+                            required
                           />
                         </template>
                       </DatePicker>
@@ -40,20 +51,17 @@
             <li class="user_imf_item">
               <label for="form_booking_outday">退房日期
                 <div class="booking_calendar" >
-                      <Calendar />
                       <DatePicker
                         v-model="book_outday"
-                        :min-date="new Date(book_inday.getTime() + 24 * 60 * 60 * 1000)"
-                        :disabled-dates="disableDates"
+                        :min-date="new Date(new Date().getTime() + 30 * 60 * 60 * 1000)"
                         :masks="masks"
-                        :attributes="attribute"
                         color="primary"
                         is-required >
                         <template v-slot="{ inputValue, inputEvents }">
                           <input
-                            class="booking_form_input"
                             :value="inputValue"
                             v-on="inputEvents"
+                            required
                           />
                         </template>
                       </DatePicker>
@@ -61,17 +69,17 @@
               </label>
             </li>
             <li>
-              <p class="total_day">{{ totalDays }}天，{{ normalDays }}晚平日</p>
+              <p class="total_day">{{ totalDays || 2 }}天，{{ normalDays ||1 }} 晚平日</p>
             </li>
           </ul>
           <div class="form_price">
             <p class="form_price_title">總計</p>
-            <p class="form_total_price">${{ $filters.currency(pricetotal
+            <p class="form_total_price">${{ $filters.currency( totalPrice
              || data.normalDayPrice) }}</p>
           </div>
-          <button class="form_bookingbtn" @click="test()">確認送出</button>
+          <button class="form_bookingbtn" type="submit" >確認送出</button>
           <div class="booking_footer">此預約系統僅預約功能，並不會對您進行收費</div>
-        </div>
+        </form>
         <div class="booking_roomimf">
           <div class="form_room_title">
             <a href="#" class="form_close" @click.prevent="closeForm()">
@@ -120,7 +128,7 @@
             <div class="flow_card">
               <img class="flow_card_image"
               :src="require(`../assets/image/icons/search_chat.svg`)" alt="search_chat">
-              <p class="flow_card_text">系統立即回覆是否預訂成功<br>並以簡訊發送訂房通知<br>(若未收到簡訊請來電確認)</p>
+              <p class="flow_card_text">系統立即回覆是否預訂成功並以簡訊發送訂房通知(若未收到簡訊請來電確認)</p>
             </div>
             <img class="form_arrow_icon"
             :src="require(`../assets/image/icons/surface1.svg`)" alt="surface1">
@@ -134,38 +142,82 @@
       </div>
     </div>
   </div>
+  <ResultView
+    v-if="isDone || isFail"
+    :is-done="isDone"
+    :is-fail="isFail"
+  ></ResultView>
 </template>
 
 <script>
+import axios from 'axios';
+import ResultView from '@/components/ResultView.vue';
 
 export default {
   data() {
     return {
       Amenities: {},
-      book_inday: '',
-      book_outday: '',
-      attribute: [{ key: 'selectedDay', highlight: true, dates: '' }],
+      book_inday: this.inday,
+      book_outday: this.outday,
+      roomAmenities: this.roomamenities,
+      disableDates: this.disabledates,
       masks: {
         input: 'YYYY - MM - DD',
       },
+      bookingdata: {
+        name: '',
+        tel: '',
+        date: [],
+      },
+      isDone: false,
+      isFail: false,
+      error: '',
     };
   },
-  props: ['data', 'roomAmenities', 'pricetotal', 'inday', 'outday'],
+  props: ['data', 'roomamenities', 'inday', 'outday', 'totalprice', 'disabledates'],
+  components: { ResultView },
   methods: {
     closeForm() {
       this.$emit('closeForm');
     },
-    test() {
-      console.log(this.Amenities);
-      this.Amenities.forEach((item) => {
-        if (item.state.indexOf(false) === -1) {
-          console.log(`${item} 111`);
-        }
+    submit() {
+      const totalday = this.totalDays - 1;
+      for (let i = 0; i < totalday; i += 1) {
+        const startDay = new Date(this.book_inday.getTime() + i * 24 * 60 * 60 * 1000);
+        const startDayForm = new Intl.DateTimeFormat('nu', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        }).format(startDay);
+        const BookingDay = startDayForm.split('/').join('-');
+        this.bookingdata.date.push(BookingDay);
+      }
+      const roomId = this.$route.params.id;
+      this.axios = axios.create({
+        baseURL:
+          'https://challenge.thef2e.com/api/thef2e2019/stage6/room/',
+        timeout: 2000,
+        headers: {
+          Acctept: 'application/json',
+          Authorization: 'Bearer jjHZprDIBXxFzXTcwqzGI9w1hXvVBQ7YL2YdvHMNQhYthTltxTxFA46M5FQH',
+        },
       });
-    },
-    changeday() {
-      this.book_inday = this.inday;
-      this.book_outday = this.outday;
+      this.axios.post(`${roomId}`, this.bookingdata)
+        .then((res) => {
+          if (res.data.success) {
+            this.isDone = true;
+            this.bookingdata.name = '';
+            this.bookingdata.tel = '';
+            this.bookingdata.date = [];
+          }
+        })
+        .catch((err) => {
+          this.err = err;
+          this.isFail = true;
+          this.bookingdata.name = '';
+          this.bookingdata.tel = '';
+          this.bookingdata.date = [];
+        });
     },
   },
   computed: {
@@ -204,6 +256,11 @@ export default {
       }
       return normaldays;
     },
+    totalPrice() {
+      const Price = this.normalDays * this.data.normalDayPrice
+      + (this.totalDays - this.normalDays - 1) * this.data.holidayPrice;
+      return Price;
+    },
   },
   watch: {
     book_inday() {
@@ -211,9 +268,11 @@ export default {
         this.book_outday = new Date(this.book_inday.getTime() + 24 * 60 * 60 * 1000);
       }
     },
-  },
-  created() {
-    this.changeday();
+    book_outday() {
+      if (this.book_inday >= this.book_outday) {
+        this.book_inday = new Date(new Date().getTime() + 6 * 60 * 60 * 1000);
+      }
+    },
   },
 };
 </script>

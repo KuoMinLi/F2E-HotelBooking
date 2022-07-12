@@ -3,8 +3,9 @@
   :data="data"
   :inday="inday"
   :outday="outday"
-  :roomAmenities="roomAmenities"
-  :pricetotal="totalprice"
+  :totalprice="totalPrice"
+  :roomamenities="roomAmenities"
+  :disabledates="disableDates"
   @closeForm="closeForm"
 ></FormView>
 <div v-if="isShow" class="lightbox" @click="closeAlbum()">
@@ -58,7 +59,14 @@
     <h1 class="room_title">{{ data.descriptionShort.GuestMax}}人・
     {{ data.descriptionShort.Bed.length}}張 {{ data.descriptionShort.Bed[0]}} 床組・
     附早餐・衛浴 {{ data.descriptionShort['Private-Bath']}} 間・{{ data.descriptionShort.Footage}} 平方公尺</h1>
+    <h1 class="room_title room_title_sm">{{ data.descriptionShort.GuestMax}}人・
+    {{ data.descriptionShort.Bed.length}}張 {{ data.descriptionShort.Bed[0]}} 床組・附早餐
+    <br>衛浴 {{ data.descriptionShort['Private-Bath']}} 間・{{ data.descriptionShort.Footage}} 平方公尺</h1>
     <p class="room_time">平日（一～四）價格：{{ $filters.currency(data.normalDayPrice) }} /
+     假日（五〜日）價格：{{ $filters.currency(data.holidayPrice) }}<br>
+    入住時間：{{ data.checkInAndOut.checkInEarly }}（最早） / {{ data.checkInAndOut.checkInLate }}（最晚） <br>
+    退房時間：{{ data.checkInAndOut.checkOut }}</p>
+    <p class="room_time room_time_sm">平日（一～四）價格：{{ $filters.currency(data.normalDayPrice) }}<br>
      假日（五〜日）價格：{{ $filters.currency(data.holidayPrice) }}<br>
     入住時間：{{ data.checkInAndOut.checkInEarly }}（最早） / {{ data.checkInAndOut.checkInLate }}（最晚） <br>
     退房時間：{{ data.checkInAndOut.checkOut }}</p>
@@ -97,13 +105,13 @@
     <div class="roomCheck">
       <div class="roomCheck_title">空房狀態查詢</div>
       <div class="roomCheck_calendar">
-        <Calendar />
         <DatePicker
           v-model="range"
           :value="null"
           :columns="$screens({ default: 1, lg: 2 })"
           :min-date="new Date(new Date().getTime()+ 6 * 60 * 60 * 1000)"
           color="primary"
+          :disabled-dates="disableDates"
           is-expanded
           is-range />
       </div>
@@ -127,6 +135,9 @@ export default {
       range: { start: '', end: '' },
       isShow: false,
       FormShow: false,
+      booking: [],
+      disableDates: [],
+      ResultShow: true,
     };
   },
   components: { FormView },
@@ -156,6 +167,10 @@ export default {
           [this.data] = res.data.room;
           this.roomAmenities = this.data.amenities;
           this.roomImgaeUrl = this.data.imageUrl;
+          this.booking = res.data.booking;
+          for (let i = 0; i < this.booking.length; i += 1) {
+            this.disableDates.push(this.booking[i].date);
+          }
         }
       });
     },
@@ -189,6 +204,7 @@ export default {
     },
     closeForm() {
       this.FormShow = false;
+      this.range = {};
       this.getdata();
     },
   },

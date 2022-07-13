@@ -1,12 +1,8 @@
 # F2E-HotelBooking
 
----
-
 - The F2E - 前端修練精神時光屋
  - 投稿作品 - 旅館預約服務
  - 使用 `Vue` + `v-calendar` + `axios` 插件做成
-
----
 
 ## 操作說明
 

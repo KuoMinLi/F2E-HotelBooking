@@ -1,24 +1,17 @@
-# f2e-hotel
+# F2E-HotelBooking
+---
+ The F2E - 前端修練精神時光屋
+ 投稿作品 - 旅館預約服務
+ 使用 `Vue` + `v-calendar` + `axios` 插件做成
+---
+## 操作說明
 
-## Project setup
-```
-npm install
-```
+- 任意點擊首頁的六個圖片按鈕即可進入該房間查看房間資訊。
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+- 進入單個房間頁面後 可點擊左上角 查看其它房型 返回首頁。
 
-### Compiles and minifies for production
-```
-npm run build
-```
+- 在房間頁面的右下角有日曆插件可以自由選取天數 並且會馬上返回選取天數與其價格在日曆的左方。
 
-### Lints and fixes files
-```
-npm run lint
-```
+- 點擊房間頁面的左下角 Booking Now 即可開啟表單頁面。
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- 填寫表單內容點擊送出即可完成預約 完成預約後關閉表單 右下角日曆插件就會自動更新。
